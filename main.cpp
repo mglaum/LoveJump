@@ -20,6 +20,7 @@ int main() {
     sf::Sprite background(TextureManager::GetTexture("background"));
     sf::Sprite platform(TextureManager::GetTexture("platform"));
     sf::Sprite testPlatform(TextureManager::GetTexture("platform"));
+    sf::Sprite titlescreen(TextureManager::GetTexture("titlescreen"));
 
     testPlatform.setPosition(0,530);
 
@@ -37,16 +38,24 @@ int main() {
     sf::Text text;
     text.setFont(MyFont);
     text.setCharacterSize(30);
-
     text.setFillColor(sf::Color::Black);
 
-
     bool gameOver = false;
+    bool titleScreen = true;
+    int score = 0;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
+            }
+        }
+        while (titleScreen) {
+            window.draw(titlescreen);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+                titleScreen = false;
+                continue;
             }
         }
         int x = 100;
@@ -55,7 +64,7 @@ int main() {
         float dx = 0;
         float dy = 0;
         int min = 200;
-        int score = 0;
+
 
         text.setString("Score: " + std::to_string(score));
 
@@ -149,8 +158,8 @@ int main() {
         playAgain.setFillColor(sf::Color::Black);
         window.draw(playAgain);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-            gameOver = false;
             score = 0;
+            gameOver = false;
         }
         window.display();
     }
