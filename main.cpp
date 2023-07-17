@@ -52,11 +52,31 @@ int main() {
             }
         }
         while (titleScreen) {
+            while (window.pollEvent(event)) {
+                if (event.type == sf::Event::Closed) {
+                    window.close();
+                    gameOver = true;
+                    titleScreen = false;
+                    break;
+                }
+            }
             window.draw(titlescreen);
+            sf::Text title;
+            title.setCharacterSize(20);
+            title.setPosition(70, 400);
+            title.setString("Press Enter to Play");
+            title.setFont(MyFont);
+            title.setFillColor(sf::Color::Black);
+            window.draw(title);
+            window.display();
+            window.clear();
+
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
                 titleScreen = false;
+                window.clear();
                 continue;
             }
+
         }
         int x = 100;
         int y = 100;
@@ -69,6 +89,12 @@ int main() {
         text.setString("Score: " + std::to_string(score));
 
         while (!gameOver) {
+            while (window.pollEvent(event)) {
+                if (event.type == sf::Event::Closed) {
+                    gameOver = true;
+                    window.close();
+                }
+            }
             text.setPosition(10, 10);
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
